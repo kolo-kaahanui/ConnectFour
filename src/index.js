@@ -22,12 +22,6 @@ class Square extends React.Component {
 
 
 class ColumnHeader extends React.Component { // // // // // // // 
-  columnDict = {0:{0:30,1:24,2:18,3:12,4:6,5:0}, 
-          1:{0:31,1:25,2:19,3:13,4:7,5:1},
-          2:{0:32,1:26,4:20,3:14,4:8,5:2},
-          3:{0:33,1:27,2:21,3:15,4:9,5:3},
-          4:{0:34,1:28,2:22,3:16,4:10,5:4},
-          5:{0:35,1:29,2:23,3:17,4:11,5:5},}
 
   render() {
     return (
@@ -59,7 +53,10 @@ class Board extends React.Component {
 
 
   handleClick(i){
-    const squares = this.state.squares.slice()
+    const squares = this.state.squares.slice();
+    if (calculateWinner(squares) || squares[i]){
+      return;
+    }
     squares[columnDict[i][this.state.columnMiddleware[i].length]] = this.state.xIsNext ? "X":'O';
     this.setState({
       squares: squares,
@@ -83,8 +80,14 @@ class Board extends React.Component {
   }
 
   render() {
-    const status = 'Next player: ' + (this.state.xIsNext ? 'X': 'O');
-
+    //const status = 'Next player: ' + (this.state.xIsNext ? 'X': 'O');
+    const winner = calculateWinner(this.state.squares);
+    let status;
+    if(winner){
+      status = "Winner: " + winner;
+    } else {
+      status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
+    }
     return (
       <div>
         <div className="status">{status}</div>
@@ -234,7 +237,15 @@ function calculateWinner(squares) {
   [8,15,22,29],
   [12,19,26,33], // third
   [13,20,27,34],
-  [14,21,28,35],  ]
+  [14,21,28,35],  ];
+
+  for (let i=0; i< lines.length; i++){
+    const [a, b, c, d] = lines[i];
+    if ((squares[a] == squares[b]) && (squares[a] == squares[c])  && (squares[a] == squares[d])){
+      return squares[a];
+    }
+  } 
+  return null;
 }
 
 /*
