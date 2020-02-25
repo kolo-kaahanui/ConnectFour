@@ -36,7 +36,11 @@ ol, ul {
   outline: none;
 }
 
-.newSquare {
+.kbd-navigation .square:focus {
+  background: #ddd;
+}
+
+.columnHeader {
   background: #fff;
   border: 1px solid #999;
   float: left;
@@ -51,17 +55,14 @@ ol, ul {
   width: 34px;
 }
 
-.newSquare:focus {
+.columnHeader:focus {
   outline: none;
 }
 
-.newSquare:hover {
+.columnHeader:hover {
   color: gray;
 }
 
-.kbd-navigation .square:focus {
-  background: #ddd;
-}
 
 .game {
   display: flex;
