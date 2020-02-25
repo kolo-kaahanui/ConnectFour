@@ -27,7 +27,7 @@ class ColumnHeader extends React.Component { // // // // // // //
     return (
       <button 
         className="columnHeader" 
-        onClick={() => this.props.onClick()} // test
+        onClick={() => this.props.onClick()} 
       >
         {this.props.value}
       </button>
@@ -42,11 +42,10 @@ class Board extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      squares: Array(36).fill(""), // betta
+      squares: Array(36).fill(""), 
       colMemory: [],
       columnMiddleware: [[], [], [], [], [], []],
       xIsNext: true
-      //lastMove: [null,null,null,null,null,null],
       
     };
   }
@@ -54,20 +53,19 @@ class Board extends React.Component {
 
   handleClick(i){
     const squares = this.state.squares.slice();
-    if (calculateWinner(squares) || squares[i]){ // HELLO
+    if (calculateWinner(squares) || squares[i]){ 
       return;
     }
     squares[columnDict[i][this.state.columnMiddleware[i].length]] = this.state.xIsNext ? "X":'O';
     this.setState({
       squares: squares,
-      xIsNext: !this.state.xIsNext, // cool 1
+      xIsNext: !this.state.xIsNext, 
     });
     this.state.columnMiddleware[i].push(i);
     this.state.colMemory.push(i);
 
-    // most importantly
-    console.log("i is ",i);
-    console.log('last location was ',columnDict[i][this.state.columnMiddleware[i].length-1])
+    //console.log("i is ",i);
+    //console.log('last location was ',columnDict[i][this.state.columnMiddleware[i].length-1])
   }
 
   renderColumnHeader(i){
@@ -79,11 +77,10 @@ class Board extends React.Component {
 
 
   renderSquare(i) {
-    return <Square value={this.state.squares[i]}/>; // UNDER CONSTRUCTION
+    return <Square value={this.state.squares[i]}/>; 
   }
 
   render() {
-    //const status = 'Next player: ' + (this.state.xIsNext ? 'X': 'O');
     const winner = calculateWinner(this.state.squares); // 
     let status;
     if(winner=='X'){
@@ -92,7 +89,7 @@ class Board extends React.Component {
       status = "Winner: "  + winner;
     } else {
       status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
-      //status = 'Next player: ' + 'X';
+      
     }
     return (
       <div>
@@ -185,8 +182,6 @@ ReactDOM.render(
 );
 
 
-
-
 function calculateWinner(squares) {
   const lines = [
   // Horizontal
@@ -250,50 +245,22 @@ function calculateWinner(squares) {
 
   for (let i=0; i< lines.length; i++){
     const temp = lines[i];
-    //console.log(temp);
     const newTemp = [squares[temp[0]], squares[temp[1]], squares[temp[2]], squares[temp[3]]];
-    console.log(newTemp);
-    //if (newTemp.length <4){
-    //  return null
-    //}
-    // DO WE NEED AN ELSE (errything) HERE?
-    
+    //console.log(newTemp);
+
     if ((newTemp[0]=='X') &&(newTemp[1]=='X') &&(newTemp[2]=='X') &&(newTemp[3]=='X') ){
-      console.log('someone won');
+      //console.log('someone won');
       return "X"
     } else if ((newTemp[0]=='O')&&(newTemp[1]=='O')&&(newTemp[2]=='O')&&(newTemp[3]=='O')){
-      console.log('O won');
+      //console.log('O won');
       return 'O'
     }
 
+  }
 
-
-    //if ((squares[newTemp[0]] == squares[newTemp[1]]) && (squares[newTemp[2]] == squares[b]) && (squares[a] == squares[c])  && (squares[a] == squares[d])){
-    //if ((newTemp[0]=='X') && (newTemp[1]=='X') && (newTemp[2]=='X') && (newTemp[3]=='X')){
-    //  return 'X'; //cool 2
-    
-    //}
-
-    //if ((newTemp[0]=='O') && (newTemp[0]=='O') && (newTemp[0]=='O') && (newTemp[0]=='O')){
-    //  return 'O';
-    //}
-  //} 
-  //return null;
-}
-
-/*
-columnMiddleware = {0:[], 1:[], 2:[], 3:[], 4:[], 5:[]} 
-columnDict = {0:{0:30,1:24,2:18,3:12,4:6,5:0}, 
-  {},
-  {},
-  {},
-  {},
-  {}}
-
-*/
 
 }
 
 // todo
-// 1. log the last location id (0 - 35)
-// 2. fix win condition
+// 1. make nice
+// 2. deploy
