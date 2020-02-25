@@ -2,6 +2,14 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 
+// Global (takes colomn then column_fill)
+let columnDict = {0:{0:30,1:24,2:18,3:12,4:6,5:0}, 
+          1:{0:31,1:25,2:19,3:13,4:7,5:1},
+          2:{0:32,1:26,2:20,3:14,4:8,5:2},
+          3:{0:33,1:27,2:21,3:15,4:9,5:3},
+          4:{0:34,1:28,2:22,3:16,4:10,5:4},
+          5:{0:35,1:29,2:23,3:17,4:11,5:5},}
+
 class Square extends React.Component {
   render() {
     return (
@@ -12,20 +20,14 @@ class Square extends React.Component {
   }
 }
 
-// Test
-class NewSquare extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      value:0
-    }
-  }
+
+class ColumnHeader extends React.Component { // // // // // // // 
 
   render() {
     return (
       <button 
-        className="newSquare" 
-        onClick={function() {console.log("")}}
+        className="columnHeader" 
+        onClick={() => this.props.onClick()} 
       >
         {this.props.value}
       </button>
@@ -33,44 +35,74 @@ class NewSquare extends React.Component {
   }
 }
 
-class TopBar extends React.Component {
-  renderNewSquare(i){
-    return <NewSquare value={i} />
-  }
 
-  render(){
-    return (
-      <div className="first-row">
-        {this.renderNewSquare(0)}
-        {this.renderNewSquare(1)}
-        {this.renderNewSquare(2)}
-        {this.renderNewSquare(3)}
-        {this.renderNewSquare(4)}
-        {this.renderNewSquare(5)}
-      </div>
-    );
-  }
-}
 
 class Board extends React.Component {
+
   constructor(props) {
     super(props);
     this.state = {
-      squares: Array(36).fill(null),
+      squares: Array(36).fill(""), 
+      colMemory: [],
+      columnMiddleware: [[], [], [], [], [], []],
+      xIsNext: true
+      
     };
   }
+
+
+  handleClick(i){
+    const squares = this.state.squares.slice();
+    if (calculateWinner(squares) || squares[i]){ 
+      return;
+    }
+    squares[columnDict[i][this.state.columnMiddleware[i].length]] = this.state.xIsNext ? "X":'O';
+    this.setState({
+      squares: squares,
+      xIsNext: !this.state.xIsNext, 
+    });
+    this.state.columnMiddleware[i].push(i);
+    this.state.colMemory.push(i);
+
+    //console.log("i is ",i);
+    //console.log('last location was ',columnDict[i][this.state.columnMiddleware[i].length-1])
+  }
+
+  renderColumnHeader(i){
+    return <ColumnHeader 
+             value={i} 
+             onClick={() => this.handleClick(i)}
+            />
+  }
+
+
   renderSquare(i) {
-    return <Square value={i}/>; // <Square value={i}/>
+    return <Square value={this.state.squares[i]}/>; 
   }
 
   render() {
-    const status = 'Next player: X';
-
+    const winner = calculateWinner(this.state.squares); // 
+    let status;
+    if(winner=='X'){
+      status = "Winner: " + winner;
+    } else if (winner=="O"){
+      status = "Winner: "  + winner;
+    } else {
+      status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
+      
+    }
     return (
       <div>
         <div className="status">{status}</div>
 
-        <TopBar />
+        <div className="first-row">
+        {this.renderColumnHeader(0)}
+        {this.renderColumnHeader(1)}
+        {this.renderColumnHeader(2)}
+        {this.renderColumnHeader(3)}
+        {this.renderColumnHeader(4)}
+        {this.renderColumnHeader(5)}
+        </div>
         
         <div className="board-row">
           {this.renderSquare(0)}
@@ -149,6 +181,7 @@ ReactDOM.render(
   document.getElementById('root')
 );
 
+
 function calculateWinner(squares) {
   const lines = [
   // Horizontal
@@ -157,7 +190,7 @@ function calculateWinner(squares) {
   [2,3,4,5],
   [6,7,8,9], // second 
   [7,8,9,10],
-  [8,9,10,11]
+  [8,9,10,11],
   [12,13,14,15], // third
   [13,14,15,16],
   [14,15,16,17],
@@ -208,17 +241,26 @@ function calculateWinner(squares) {
   [8,15,22,29],
   [12,19,26,33], // third
   [13,20,27,34],
-  [14,21,28,35],
-  ]
+  [14,21,28,35],  ];
+
+  for (let i=0; i< lines.length; i++){
+    const temp = lines[i];
+    const newTemp = [squares[temp[0]], squares[temp[1]], squares[temp[2]], squares[temp[3]]];
+    //console.log(newTemp);
+
+    if ((newTemp[0]=='X') &&(newTemp[1]=='X') &&(newTemp[2]=='X') &&(newTemp[3]=='X') ){
+      //console.log('someone won');
+      return "X"
+    } else if ((newTemp[0]=='O')&&(newTemp[1]=='O')&&(newTemp[2]=='O')&&(newTemp[3]=='O')){
+      //console.log('O won');
+      return 'O'
+    }
+
+  }
+
+
 }
 
-/*
-columnMiddleware = {0:[], 1:[], 2:[], 3:[], 4:[], 5:[]} // len of value
-columnDict = {0:{0:30,1:24,2:18,3:12,4:6,5:0}, 
-  {},
-  {},
-  {},
-  {},
-  {}}
-
-*/
+// todo
+// 1. make nice
+// 2. deploy
