@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 
-// Global 
+// Global (takes colomn then column_fill)
 let columnDict = {0:{0:30,1:24,2:18,3:12,4:6,5:0}, 
           1:{0:31,1:25,2:19,3:13,4:7,5:1},
           2:{0:32,1:26,2:20,3:14,4:8,5:2},
@@ -42,8 +42,8 @@ class Board extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      squares: Array(36).fill(null),
-      squaresMemory: [],
+      squares: Array(36).fill(""), // betta
+      colMemory: [],
       columnMiddleware: [[], [], [], [], [], []],
       xIsNext: true
       //lastMove: [null,null,null,null,null,null],
@@ -54,17 +54,20 @@ class Board extends React.Component {
 
   handleClick(i){
     const squares = this.state.squares.slice();
-    if (calculateWinner(squares) || squares[i]){
+    if (calculateWinner(squares) || squares[i]){ // HELLO
       return;
     }
     squares[columnDict[i][this.state.columnMiddleware[i].length]] = this.state.xIsNext ? "X":'O';
     this.setState({
       squares: squares,
-      xIsNext: !this.state.xIsNext,
+      xIsNext: !this.state.xIsNext, // cool 1
     });
     this.state.columnMiddleware[i].push(i);
-    this.state.squaresMemory.push(i);
-    //console.log(columnDict[0][0]);
+    this.state.colMemory.push(i);
+
+    // most importantly
+    console.log("i is ",i);
+    console.log('last location was ',columnDict[i][this.state.columnMiddleware[i].length-1])
   }
 
   renderColumnHeader(i){
@@ -81,12 +84,15 @@ class Board extends React.Component {
 
   render() {
     //const status = 'Next player: ' + (this.state.xIsNext ? 'X': 'O');
-    const winner = calculateWinner(this.state.squares);
+    const winner = calculateWinner(this.state.squares); // 
     let status;
-    if(winner){
+    if(winner=='X'){
       status = "Winner: " + winner;
+    } else if (winner=="O"){
+      status = "Winner: "  + winner;
     } else {
       status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
+      //status = 'Next player: ' + 'X';
     }
     return (
       <div>
@@ -178,6 +184,9 @@ ReactDOM.render(
   document.getElementById('root')
 );
 
+
+
+
 function calculateWinner(squares) {
   const lines = [
   // Horizontal
@@ -186,7 +195,7 @@ function calculateWinner(squares) {
   [2,3,4,5],
   [6,7,8,9], // second 
   [7,8,9,10],
-  [8,9,10,11]
+  [8,9,10,11],
   [12,13,14,15], // third
   [13,14,15,16],
   [14,15,16,17],
@@ -240,16 +249,40 @@ function calculateWinner(squares) {
   [14,21,28,35],  ];
 
   for (let i=0; i< lines.length; i++){
-    const [a, b, c, d] = lines[i];
-    if ((squares[a] == squares[b]) && (squares[a] == squares[c])  && (squares[a] == squares[d])){
-      return squares[a];
+    const temp = lines[i];
+    //console.log(temp);
+    const newTemp = [squares[temp[0]], squares[temp[1]], squares[temp[2]], squares[temp[3]]];
+    console.log(newTemp);
+    //if (newTemp.length <4){
+    //  return null
+    //}
+    // DO WE NEED AN ELSE (errything) HERE?
+    
+    if ((newTemp[0]=='X') &&(newTemp[1]=='X') &&(newTemp[2]=='X') &&(newTemp[3]=='X') ){
+      console.log('someone won');
+      return "X"
+    } else if ((newTemp[0]=='O')&&(newTemp[1]=='O')&&(newTemp[2]=='O')&&(newTemp[3]=='O')){
+      console.log('O won');
+      return 'O'
     }
-  } 
-  return null;
+
+
+
+    //if ((squares[newTemp[0]] == squares[newTemp[1]]) && (squares[newTemp[2]] == squares[b]) && (squares[a] == squares[c])  && (squares[a] == squares[d])){
+    //if ((newTemp[0]=='X') && (newTemp[1]=='X') && (newTemp[2]=='X') && (newTemp[3]=='X')){
+    //  return 'X'; //cool 2
+    
+    //}
+
+    //if ((newTemp[0]=='O') && (newTemp[0]=='O') && (newTemp[0]=='O') && (newTemp[0]=='O')){
+    //  return 'O';
+    //}
+  //} 
+  //return null;
 }
 
 /*
-columnMiddleware = {0:[], 1:[], 2:[], 3:[], 4:[], 5:[]} // len of value
+columnMiddleware = {0:[], 1:[], 2:[], 3:[], 4:[], 5:[]} 
 columnDict = {0:{0:30,1:24,2:18,3:12,4:6,5:0}, 
   {},
   {},
@@ -258,3 +291,9 @@ columnDict = {0:{0:30,1:24,2:18,3:12,4:6,5:0},
   {}}
 
 */
+
+}
+
+// todo
+// 1. log the last location id (0 - 35)
+// 2. fix win condition
