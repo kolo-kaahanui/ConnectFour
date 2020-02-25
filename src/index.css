@@ -15,14 +15,16 @@ ol, ul {
 
 .status {
   margin-bottom: 10px;
+  color: gray;
 }
 
 .square {
-  background: #fff;
+  background: #c92ea3;
   border: 1px solid #999;
   float: left;
   font-size: 24px;
   font-weight: bold;
+  color: #fff;
   line-height: 34px;
   height: 34px;
   margin-right: -1px;
@@ -42,10 +44,11 @@ ol, ul {
 
 .columnHeader {
   background: #fff;
-  border: 1px solid #999;
+  border: 0px solid #999;
   float: left;
   font-size: 24px;
   font-weight: bold;
+  color: gray;
   line-height: 34px;
   height: 34px;
   margin-right: -1px;
@@ -60,7 +63,7 @@ ol, ul {
 }
 
 .columnHeader:hover {
-  color: gray;
+  color: #c92ea3;
 }
 
 
@@ -78,4 +81,12 @@ ol, ul {
   content: "";
   display: table;
   padding-bottom: 10px;
+}
+
+.game {
+  padding-top: 30px;
+  position: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
