@@ -1,3 +1,3 @@
 ## Connect-Four
 
-[!image](connect-four.jpg)
+[!image](connect-four.png)
