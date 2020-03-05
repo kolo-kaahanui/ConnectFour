@@ -36,7 +36,6 @@ class ColumnHeader extends React.Component { // // // // // // //
 }
 
 
-
 class Board extends React.Component {
 
   constructor(props) {
@@ -80,7 +79,7 @@ class Board extends React.Component {
     return <Square value={[this.state.squares[i], this.state.textColorArray[i]]}/>;  // id, lowLightBool (true or false)
   }
 
-  renderLowLight(winningSquares){
+  renderLowLight(winningSquares){ // renders the winning connect-four
     for (let i =0;i<4;i++){
       this.state.textColorArray[winningSquares[i]] = 'black';
     }
@@ -91,26 +90,6 @@ class Board extends React.Component {
     //console.log(winner)
     let status;
     
-    /*
-    // used to be an if, else if, else 
-    try{
-      if(this.state.squares[winner[0]]== 'X'){
-        status = "Winner: " + 'X';
-      }
-    } catch(err){
-      console.log(err);
-      status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
-    }
-
-    try {
-      if (this.state.squares[winner[0]]== 'O'){
-        status = "Winner: "  + 'O';
-      }
-    } catch(err){
-      console.log(err);
-      status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
-    } // no it's two try blocks
-    */
     try {
     if(winner.length == 4){
         //console.log(winner);
@@ -201,10 +180,7 @@ class Game extends React.Component {
         <div className="game-board">
           <Board />
         </div>
-        <div className="game-info">
-          <div>{/* status */}</div>
-          <ol>{/* TODO */}</ol>
-        </div>
+        
       </div>
     );
   }
