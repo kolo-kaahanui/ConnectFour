@@ -47,7 +47,7 @@ ol, ul {
   background: #fff;
   border: 0px solid #999;
   float: left;
-  font-size: 8vmin; /* 24px; */
+  font-size: 7vmin; /* 24px; */
   font-weight: bold;
   color: gray;
   line-height: 12vmin;/* 34px; */
@@ -91,5 +91,10 @@ ol, ul {
 }
 
 .game-board{
-  padding-bottom: 30px;;
+  padding-bottom: 0px;;
 }
+
+.game-title h1 {
+  color: gray;
+}
+
