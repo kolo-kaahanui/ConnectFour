@@ -80,9 +80,13 @@ class Board extends React.Component {
   }
 
   renderLowLight(winningSquares){ // renders the winning connect-four
+    let temp = this.state.textColorArray;
     for (let i =0;i<4;i++){
-      this.state.textColorArray[winningSquares[i]] = 'black';
+      temp[winningSquares[i]] = 'black';
     }
+    this.setState({
+      textColorArray:temp
+    });
   }
 
   render() {
@@ -91,14 +95,14 @@ class Board extends React.Component {
     let status;
     
     try {
-    if(winner.length == 4){
+    if(winner.length === 4){
         //console.log(winner);
-        if(this.state.squares[winner[0]]== 'X'){
+        if(this.state.squares[winner[0]]=== 'X'){
           this.renderLowLight(winner)
-          status = "Winner: " + 'X';
-        } else if (this.state.squares[winner[0]]== 'O'){
+          status = "Winner: X";
+        } else if (this.state.squares[winner[0]]=== 'O'){
           this.renderLowLight(winner)
-          status = "Winner: "  + 'O';
+          status = "Winner: O";
         }
     }
   } catch (err){
@@ -260,12 +264,12 @@ function calculateWinner(squares) {
     const newTemp = [squares[temp[0]], squares[temp[1]], squares[temp[2]], squares[temp[3]]];
     //console.log(newTemp);
 
-    if ((newTemp[0]=='X') &&(newTemp[1]=='X') &&(newTemp[2]=='X') &&(newTemp[3]=='X') ){
+    if ((newTemp[0]==='X') &&(newTemp[1]==='X') &&(newTemp[2]==='X') &&(newTemp[3]==='X') ){
       //console.log('someone won');
       //highlight
       //return newTemp
       return temp
-    } else if ((newTemp[0]=='O')&&(newTemp[1]=='O')&&(newTemp[2]=='O')&&(newTemp[3]=='O')){
+    } else if ((newTemp[0]==='O')&&(newTemp[1]==='O')&&(newTemp[2]==='O')&&(newTemp[3]==='O')){
       //console.log('O won');
       //return newTemp
       return temp
