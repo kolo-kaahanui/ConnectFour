@@ -250,6 +250,7 @@ function calculateWinner(squares) {
 
     if ((newTemp[0]=='X') &&(newTemp[1]=='X') &&(newTemp[2]=='X') &&(newTemp[3]=='X') ){
       //console.log('someone won');
+      //highlight
       return "X"
     } else if ((newTemp[0]=='O')&&(newTemp[1]=='O')&&(newTemp[2]=='O')&&(newTemp[3]=='O')){
       //console.log('O won');
