@@ -10,11 +10,11 @@ let columnDict = {0:{0:30,1:24,2:18,3:12,4:6,5:0},
           4:{0:34,1:28,2:22,3:16,4:10,5:4},
           5:{0:35,1:29,2:23,3:17,4:11,5:5},}
 
-class Square extends React.Component {
+class Square extends React.Component { //props[0] = ID, props[1] = textColor
   render() {
     return (
-      <button className="square">
-        {this.props.value}
+      <button style={{color:this.props.value[1]}} className="square">
+        {this.props.value[0]} 
       </button>
     );
   }
@@ -36,7 +36,6 @@ class ColumnHeader extends React.Component { // // // // // // //
 }
 
 
-
 class Board extends React.Component {
 
   constructor(props) {
@@ -45,7 +44,8 @@ class Board extends React.Component {
       squares: Array(36).fill(""), 
       colMemory: [],
       columnMiddleware: [[], [], [], [], [], []],
-      xIsNext: true
+      xIsNext: true,
+      textColorArray: Array(36).fill('white')
       
     };
   }
@@ -75,22 +75,37 @@ class Board extends React.Component {
             />
   }
 
-
   renderSquare(i) {
-    return <Square value={this.state.squares[i]}/>; 
+    return <Square value={[this.state.squares[i], this.state.textColorArray[i]]}/>;  // id, lowLightBool (true or false)
+  }
+
+  renderLowLight(winningSquares){ // renders the winning connect-four
+    for (let i =0;i<4;i++){
+      this.state.textColorArray[winningSquares[i]] = 'black';
+    }
   }
 
   render() {
-    const winner = calculateWinner(this.state.squares); // 
+    let winner = calculateWinner(this.state.squares); // returns a list
+    //console.log(winner)
     let status;
-    if(winner=='X'){
-      status = "Winner: " + winner;
-    } else if (winner=="O"){
-      status = "Winner: "  + winner;
-    } else {
-      status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
-      
+    
+    try {
+    if(winner.length == 4){
+        //console.log(winner);
+        if(this.state.squares[winner[0]]== 'X'){
+          this.renderLowLight(winner)
+          status = "Winner: " + 'X';
+        } else if (this.state.squares[winner[0]]== 'O'){
+          this.renderLowLight(winner)
+          status = "Winner: "  + 'O';
+        }
     }
+  } catch (err){
+    status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
+  }
+    
+
     return (
       <div>
         <div className="status">{status}</div>
@@ -165,10 +180,7 @@ class Game extends React.Component {
         <div className="game-board">
           <Board />
         </div>
-        <div className="game-info">
-          <div>{/* status */}</div>
-          <ol>{/* TODO */}</ol>
-        </div>
+        
       </div>
     );
   }
@@ -251,10 +263,12 @@ function calculateWinner(squares) {
     if ((newTemp[0]=='X') &&(newTemp[1]=='X') &&(newTemp[2]=='X') &&(newTemp[3]=='X') ){
       //console.log('someone won');
       //highlight
-      return "X"
+      //return newTemp
+      return temp
     } else if ((newTemp[0]=='O')&&(newTemp[1]=='O')&&(newTemp[2]=='O')&&(newTemp[3]=='O')){
       //console.log('O won');
-      return 'O'
+      //return newTemp
+      return temp
     }
 
   }
@@ -263,5 +277,4 @@ function calculateWinner(squares) {
 }
 
 // todo
-// 1. make nice
-// 2. deploy
+// 1. make calculateWinner return an Int (-1, for 'X' and -2 for 'O')
