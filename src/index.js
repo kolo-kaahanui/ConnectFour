@@ -91,23 +91,25 @@ class Board extends React.Component {
 
   render() {
     let winner = calculateWinner(this.state.squares); // returns a list
-    //console.log(winner)
     let status;
     
     try {
-    if(winner.length === 4){
-        //console.log(winner);
+      if(winner.length === 4){
         if(this.state.squares[winner[0]]=== 'X'){
           this.renderLowLight(winner)
-          status = "Winner: X";
         } else if (this.state.squares[winner[0]]=== 'O'){
           this.renderLowLight(winner)
-          status = "Winner: O";
         }
+      } 
+    } catch (err){
+      console.log(err)
     }
-  } catch (err){
-    status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
-  }
+
+    if(winner){
+      // pass
+    } else{
+      status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
+    }
     
 
     return (
