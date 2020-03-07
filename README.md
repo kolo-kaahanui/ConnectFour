@@ -1,5 +1,5 @@
 ## Connect-Four
-A game created with ReactJs
+A game created with ReactJs ( off of the tic-tac-toe tutorial)
 <br>
 
 **Features**
