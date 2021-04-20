@@ -285,3 +285,5 @@ function calculateWinner(squares) {
 
 }
 
+// todo
+// 1. make calculateWinner return an Int (-1, for 'X' and -2 for 'O')
